@@ -3,78 +3,31 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>OSINT Intelligence Tool</title>
+  <title>OSINT Intelligence Tool - Unlocked</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link rel="stylesheet" href="osint.css">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 </head>
 <body>
-  <!-- Watermark -->
   <div class="watermark">
     <div class="watermark-line watermark-intelligence">INTELLIGENCE LOOKUP TOOL</div>
     <div class="watermark-line watermark-confidential">CONFIDENTIAL</div>
     <div class="watermark-line watermark-intelligence">INTELLIGENCE LOOKUP TOOL</div>
     <div class="watermark-line watermark-confidential">CONFIDENTIAL</div>
-    <div class="watermark-line watermark-intelligence">INTELLIGENCE LOOKUP TOOL</div>
-    <div class="watermark-line watermark-confidential">CONFIDENTIAL</div>
-    <div class="watermark-line watermark-intelligence">INTELLIGENCE LOOKUP TOOL</div>
-    <div class="watermark-line watermark-confidential">CONFIDENTIAL</div>
   </div>
 
-  <!-- Theme Toggle -->
   <button class="theme-toggle" id="themeToggle" title="Toggle Theme">
     <i class="fas fa-moon"></i>
   </button>
 
-  <!-- Session Timer -->
-  <div class="session-timer" id="sessionTimer" style="display: none;">
+  <div class="session-timer" id="sessionTimer" style="display: block;">
     <i class="fas fa-clock"></i> Session: <span id="timer">30:00</span>
   </div>
 
-  <!-- PIN Protection Overlay -->
-  <div class="pin-overlay" id="pinOverlay">
-    <div class="pin-container">
-      <div class="pin-logo">
-        <div class="pin-logo-icon">
-          <div class="logo-badge">
-            <i class="fas fa-shield-alt"></i>
-          </div>
-        </div>
-        <h1 class="pin-title">
-          <span class="logo-text">
-            <span class="logo-icon-small"><i class="fas fa-search-location"></i></span>
-            Intelligence Lookup Tool
-          </span>
-        </h1>
-        <p class="pin-subtitle">OSINT Intelligence Platform</p>
-      </div>
-      
-      <div class="pin-instructions">
-        <i class="fas fa-key"></i> Enter your secure access PIN to continue
-      </div>
-      
-      <div class="pin-input-container">
-        <input type="password" id="pinInput" class="pin-input" placeholder="••••" maxlength="4" inputmode="numeric">
-      </div>
-      
-      <div class="button-container">
-        <button id="submitPin" class="pin-button"><i class="fas fa-lock-open"></i> Authenticate</button>
-      </div>
-      
-      <div class="pin-error" id="pinError"></div>
-      
-      <div class="attempts-counter" id="attemptsCounter">
-        Attempts remaining: <span id="attemptsLeft">3</span>
-      </div>
-      
-      <div class="security-notice">
-        <i class="fas fa-info-circle"></i> This system is monitored and all access attempts are logged.
-      </div>
+  <div class="pin-overlay" id="pinOverlay" style="display: none !important;">
     </div>
-  </div>
 
-  <!-- Main Application (initially hidden) -->
-  <div id="mainApp" style="display: none;">
+  <div id="mainApp" style="display: block !important;">
     <div class="header fade-in">
       <div class="logo">
         <div class="logo-icon"><i class="fas fa-search-location"></i></div>
@@ -85,19 +38,18 @@
               Intelligence Lookup Tool
             </span>
           </h1>
-          <p class="tagline">Advanced intelligence analysis for legitimate security research and verification purposes</p>
+          <p class="tagline">Advanced intelligence analysis for legitimate security research</p>
         </div>
       </div>
     </div>
 
     <div class="card card-hover slide-in">
       <div class="tool-info">
-        <div class="info-item"><i class="fas fa-shield-alt"></i><span>Secure & Encrypted Queries</span></div>
-        <div class="info-item"><i class="fas fa-database"></i><span>Multiple Data Sources</span></div>
-        <div class="info-item"><i class="fas fa-bolt"></i><span>Real-time Processing</span></div>
+        <div class="info-item"><i class="fas fa-shield-alt"></i><span>Secure Queries</span></div>
+        <div class="info-item"><i class="fas fa-database"></i><span>Data Sources</span></div>
+        <div class="info-item"><i class="fas fa-bolt"></i><span>Real-time</span></div>
       </div>
 
-      <!-- API Status -->
       <div class="api-status online" id="apiStatus">
         <i class="fas fa-circle"></i> All systems operational
       </div>
@@ -110,10 +62,6 @@
         <div class="stat-item">
           <div class="stat-value" id="successRate">100%</div>
           <div class="stat-label">Success Rate</div>
-        </div>
-        <div class="stat-item">
-          <div class="stat-value" id="responseTime">0ms</div>
-          <div class="stat-label">Avg Response</div>
         </div>
       </div>
 
@@ -133,124 +81,44 @@
         
         <div id="singleSearch">
           <div class="input-container">
-            <input id="inputField" type="text" placeholder="Enter number..." inputmode="text" />
+            <input id="inputField" type="text" placeholder="Enter number..." />
           </div>
         </div>
 
         <div id="bulkSearch" style="display: none;">
-          <div class="bulk-type-selector">
-            <div class="bulk-type-btn active" id="uploadOption">
-              <i class="fas fa-upload"></i> Upload CSV
-            </div>
-            <div class="bulk-type-btn" id="manualOption">
-              <i class="fas fa-keyboard"></i> Manual Entry
-            </div>
-          </div>
-
-          <div id="uploadSection">
-            <div class="bulk-upload">
-              <input type="file" id="csvUpload" accept=".csv" style="display: none;">
-              <button class="bulk-upload-btn" id="uploadBtn">
-                <i class="fas fa-upload"></i> Upload CSV File
-              </button>
-              <div class="instructions" id="uploadInstructions">
-                <i class="fas fa-info-circle"></i> CSV should contain one number per line
-              </div>
-            </div>
-          </div>
-
-          <div id="manualSection" style="display: none;">
-            <div class="manual-entry-container">
-              <textarea id="manualInput" class="manual-entry-textarea" placeholder=""></textarea>
-              <div class="instructions" id="manualInstructions">
-                <i class="fas fa-info-circle"></i> Enter one number per line
-              </div>
-            </div>
-          </div>
+            <textarea id="manualInput" style="width:100%; height:100px; background:#1a1a1a; color:white; border:1px solid #333; padding:10px; border-radius:5px;" placeholder="Enter numbers here (one per line)"></textarea>
         </div>
 
-        <div class="button-container">
-          <button id="go" class="pulse glow-effect"><i class="fas fa-search"></i> Search</button>
-          <button id="clearBtn" class="clear-btn"><i class="fas fa-eraser"></i> Clear</button>
-        </div>
-        
-        <div class="instructions" id="mainInstructions">
-          <i class="fas fa-info-circle"></i>
-          Mobile: 10-digit number | Aadhaar: 12-digit number | GST: 15-char alphanumeric | Telegram: User/ID | Vehicle RC: 10-15 char alphanumeric | IFSC: 11-char alphanumeric
+        <div class="button-container" style="margin-top: 20px;">
+          <button id="go" style="background: #1a73e8; color: white; padding: 10px 25px; border: none; border-radius: 5px; cursor: pointer;"><i class="fas fa-search"></i> Search Now</button>
+          <button id="clearBtn" class="clear-btn">Clear</button>
         </div>
       </div>
       
       <div class="results-section">
-        <!-- hidden raw json -->
-        <textarea id="rawOutput" readonly></textarea>
+        <textarea id="formattedOutput" readonly style="width:100%; height:200px; margin-top:20px; background:#000; color:#0f0; font-family:monospace;" placeholder="Results will appear here..."></textarea>
         
-        <!-- formatted visible -->
-        <textarea id="formattedOutput" readonly placeholder="Formatted results will appear here..."></textarea>
-        
-        <!-- Enhanced Bulk Search Progress -->
-        <div class="progress-section" id="progressSection" style="display: none;">
-          <div class="progress-info">
-            <span>Processing bulk search...</span>
-            <span id="progressPercentage">0%</span>
-          </div>
-          <div class="progress-container">
-            <div class="progress-bar" id="progressBar"></div>
-          </div>
-          <div class="progress-stats">
-            <span>Processed: <span id="processedCount">0</span>/<span id="totalCount">0</span></span>
-            <span class="stat-positive">Found: <span id="foundCount">0</span></span>
-            <span class="stat-negative">Not Found: <span id="notFoundCount">0</span></span>
-          </div>
-          <div class="progress-time">
-            <i class="fas fa-clock"></i> Elapsed: <span id="elapsedTime">0s</span>
-          </div>
-        </div>
-        
-        <div class="action-buttons">
-          <button id="copyFormatted" class="glow-effect"><i class="fas fa-copy"></i> Copy Result</button>
-          <button id="downloadBtn" class="glow-effect"><i class="fas fa-download"></i> Download TXT</button>
-        </div>
-
-        <!-- Export Options -->
-        <div class="export-options">
-          <button class="export-btn" id="exportPDF">
-            <i class="fas fa-file-pdf"></i> PDF
-          </button>
-          <button class="export-btn" id="exportCSV">
-            <i class="fas fa-file-csv"></i> CSV
-          </button>
+        <div class="action-buttons" style="margin-top:15px;">
+          <button id="copyFormatted"><i class="fas fa-copy"></i> Copy</button>
+          <button id="exportPDF"><i class="fas fa-file-pdf"></i> Export PDF</button>
         </div>
         
         <div class="status" id="status"></div>
-        
-        <!-- Search History -->
-        <div class="search-history" id="searchHistory" style="display: none;">
-          <div style="font-size: 0.9rem; margin-bottom: 10px; color: rgba(255,255,255,0.7);">
-            <i class="fas fa-history"></i> Recent Searches
-          </div>
-          <div id="historyList"></div>
-        </div>
-        
-        <div class="confidential-message">
-          <i class="fas fa-exclamation-triangle"></i>
-          <strong>Confidential:</strong> For Police / LEA only. Data from legal sources. Use with consent/authorization.
-          Intermediary service, no storage, not liable. IT Act & DPDP compliant. Do not share publicly.
-        </div>
       </div>
     </div>
 
     <div class="footer">
-      <p>
-        <span class="logo-text-footer">
-          <span class="logo-icon-small"><i class="fas fa-search-location"></i></span>
-          Intelligence Lookup Tool
-        </span> 
-        v3.0 | For authorized research purposes only
-      </p>
-      <p class="disclaimer">This tool is designed for security professionals, researchers, and authorized personnel only. Always ensure compliance with local laws and regulations.</p>
+      <p>v3.0 | Unlocked Version</p>
     </div>
   </div>
 
   <script src="osint.js"></script>
+  <script>
+      // Force display on load
+      window.onload = function() {
+          document.getElementById('pinOverlay').style.setProperty('display', 'none', 'important');
+          document.getElementById('mainApp').style.setProperty('display', 'block', 'important');
+      };
+  </script>
 </body>
-                </html>
+</html>
